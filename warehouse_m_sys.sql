@@ -2,18 +2,48 @@ CREATE DATABASE Management;
 USE Management;
 CREATE TABLE warehouse(
 warehouse_id INT PRIMARY KEY,
-name VARCHAR(50),
-Country VARCHAR(80)
+managed_by VARCHAR(50), 
+Country VARCHAR(80),
+role_id int,
+FOREIGN KEY (role_id) REFERENCES role (role_id)
 );
-
-INSERT INTO warehouse VALUES (101, "TOM", "SWITZERLAND");
-INSERT INTO warehouse VALUES (102, "JERRY", "POLAND");
-INSERT INTO warehouse VALUES (103, "Mary", "INDIA");
-INSERT INTO warehouse VALUES (104, "Chloe", "AMERICA");
-INSERT INTO warehouse VALUES (105, "Santa", "GREENLAND");
-INSERT INTO warehouse VALUES (106, "Chris", "AFRICA");
+drop table warehouse;
+INSERT INTO warehouse VALUES (101, "TOM", "SWITZERLAND", 1);
+INSERT INTO warehouse VALUES (102, "JERRY", "POLAND" , 3);
+INSERT INTO warehouse VALUES (103, "Mary", "INDIA", 3);
+INSERT INTO warehouse VALUES (104, "Chloe", "AMERICA", 3);
+INSERT INTO warehouse VALUES (105, "Santa", "GREENLAND", 2);
+INSERT INTO warehouse VALUES (106, "Chris", "AFRICA", 2);
 
 SELECT * FROM warehouse;
+
+CREATE TABLE role(
+role_id INT PRIMARY KEY,
+role_name VARCHAR(50)
+);
+INSERT INTO role VALUES (1, "Admin");
+INSERT INTO role VALUES (2, "user");
+INSERT INTO role VALUES (3, "Manager");
+
+SELECT * FROM role;
+
+CREATE TABLE zone(
+zone_id INT PRIMARY KEY,
+warehouse_id INT,
+zone_type VARCHAR(50),
+FOREIGN KEY (warehouse_id) REFERENCES warehouse(warehouse_id)
+
+
+);
+drop table zone;
+INSERT INTO zone VALUES (1, 103, "inbound");
+INSERT INTO zone VALUES (2, 102, "storage");
+INSERT INTO zone VALUES (3, 101, "picking");
+INSERT INTO zone VALUES (4, 104, "inbound");
+INSERT INTO zone VALUES (5, 105, "storage");
+SELECT * FROM zone;
+
+
 
 ALTER TABLE warehouse 
 CHANGE COLUMN Location Country VARCHAR(80);
@@ -68,18 +98,74 @@ SELECT * FROM Purchase_order;
 ALTER TABLE Purchase_order
 DROP COLUMN product_id;
 
+SELECT *
+FROM Supplier
+inner join Purchase_order
+ON Supplier.supplier_id = Purchase_order.supplier_id
+;
+
 CREATE TABLE Purchase_order_item(
 order_id INT PRIMARY KEY,
 product_id INT,
 purchase_id INT,
-ordered_item VARCHAR(50),
 order_qnt INT,
 FOREIGN KEY (purchase_id) REFERENCES Purchase_order(purchase_id),
 FOREIGN KEY (product_id) REFERENCES Product(product_id)
 
 
 );
+ALTER  TABLE Purchase_order_item
+DROP COLUMN ordered_item;
+
+DROP TABLE Purchase_order_item;
+
+
+INSERT INTO Purchase_order_item (order_id, product_id, purchase_id, order_qnt)
+VALUES
+    (1, 1, 001, 234),
+    (2, 2, 002, 344),
+    (3, 3, 003, 432);
 SELECT * FROM Purchase_order_item;
+drop table Purchase_order_item;
+
+
+CREATE TABLE Picking_task (
+    picking_id INT PRIMARY KEY,
+    status VARCHAR(50),
+    sales_id INT,
+    FOREIGN KEY (sales_id) REFERENCES sales_order (sales_id)
+);
+drop table Picking_task;
+
+SELECT * FROM Picking_task;
+CREATE TABLE Shipment(
+shipment_id INT PRIMARY KEY,
+carrier VARCHAR(50),
+tracking VARCHAR(50)
+
+);
+CREATE TABLE sales_order(
+    sales_id INT PRIMARY KEY,
+    status VARCHAR(50)
+);
+CREATE TABLE Inventory(
+inventory_id INT PRIMARY KEY,
+zone_id INT,
+product_id INT,
+quantity INT,
+FOREIGN KEY (product_id) REFERENCES Product(product_id),
+FOREIGN KEY (zone_id) REFERENCES zone(zone_id)
+
+);
+drop table Inventory;
+INSERT INTO Inventory VALUES
+(301, 2, 1, 900),
+(302, 1, 2, 900),
+(303, 3, 3, 900);
+SELECT * FROM Inventory;
+
+
+SHOW TABLES;
 
 
 
