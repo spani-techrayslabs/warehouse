@@ -1,0 +1,313 @@
+openapi: 3.0.0
+info:
+  title: Warehouse Management System API
+  description: REST API for managing warehouse operations such as inventory, orders, suppliers, and picking tasks.
+  version: 1.0.0
+  contact:
+    email: spanitechrayslabs@gmail.com
+    name: warehouse management system
+  
+paths:
+
+  /roles:
+    get:
+      tags:
+        - roles
+      description: to fetch details of the warehouse
+      parameters:
+        - name: role
+          in: path
+      summary: Get all roles
+      responses:
+        '200':
+          description: List of roles
+          content: 
+            application/json:
+              schema:
+              $ref: '#/components/schemas/Role'
+
+    post:
+      summary: Create a new role
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+      responses:
+        '201':
+          description: Role created
+
+  /warehouses:
+    get:
+      tags:
+        - warehouse
+      description: to fetch details of the warehouse
+      parameters:
+        - name: role
+          in: path
+      summary: Get all roles
+      responses:
+        '200':
+          description: List of roles
+          content: 
+            application/json:
+              schema:
+              $ref: '#/components/schemas/Warehouse'
+    post:
+      summary: Create a warehouse
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Warehouse'
+      responses:
+        '201':
+          description: Warehouse created
+
+  /zones:
+    get:
+      summary: Get all zones
+      responses:
+        '200':
+          description: List of zones
+    post:
+      summary: Create a zone
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Zone'
+      responses:
+        '201':
+          description: Zone created
+
+  /products:
+    get:
+      summary: Get all products
+      responses:
+        '200':
+          description: List of products
+    post:
+      summary: Create a product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '201':
+          description: Product created
+
+  /inventory:
+    get:
+      summary: Get inventory details
+      responses:
+        '200':
+          description: Inventory list
+    post:
+      summary: Add inventory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Inventory'
+      responses:
+        '201':
+          description: Inventory added
+
+  /suppliers:
+    get:
+      summary: Get all suppliers
+      responses:
+        '200':
+          description: List of suppliers
+    post:
+      summary: Create supplier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Supplier'
+      responses:
+        '201':
+          description: Supplier created
+
+  /purchase-orders:
+    get:
+      summary: Get purchase orders
+      responses:
+        '200':
+          description: List of purchase orders
+    post:
+      summary: Create purchase order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PurchaseOrder'
+      responses:
+        '201':
+          description: Purchase order created
+
+  /purchase-order-items:
+    post:
+      summary: Add item to purchase order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PurchaseOrderItem'
+      responses:
+        '201':
+          description: Item added
+
+  /sales-orders:
+    get:
+      summary: Get sales orders
+      responses:
+        '200':
+          description: List of sales orders
+    post:
+      summary: Create sales order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SalesOrder'
+      responses:
+        '201':
+          description: Sales order created
+  /picking-tasks:
+    get:
+      summary: Get picking tasks
+      responses:
+        '200':
+          description: List of picking tasks
+    post:
+      summary: Create picking task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PickingTask'
+      responses:
+        '201':
+          description: Picking task created
+
+components:
+  schemas:
+
+    Role:
+      type: object
+      properties:
+        role_id:
+          type: integer
+        role_name:
+          type: string
+
+    Warehouse:
+      type: object
+      properties:
+        warehouse_id:
+          type: integer
+        managed_by:
+          type: string
+        country:
+          type: string
+        role_id:
+          type: integer
+
+    Zone:
+      type: object
+      properties:
+        zone_id:
+          type: integer
+        warehouse_id:
+          type: integer
+        zone_type:
+          type: string
+
+    Product:
+      type: object
+      properties:
+        product_id:
+          type: integer
+        product_name:
+          type: string
+        category:
+          type: string
+        unit:
+          type: integer
+
+    Inventory:
+      type: object
+      properties:
+        inventory_id:
+          type: integer
+        zone_id:
+          type: integer
+        product_id:
+          type: integer
+        quantity:
+          type: integer
+
+    Supplier:
+      type: object
+      properties:
+        supplier_id:
+          type: integer
+        supplier_name:
+          type: string
+        phone_no:
+          type: integer
+          format: int64
+
+    PurchaseOrder:
+      type: object
+      properties:
+        purchase_id:
+          type: integer
+        supplier_id:
+          type: integer
+        status:
+          type: string
+
+    PurchaseOrderItem:
+      type: object
+      properties:
+        order_id:
+          type: integer
+        purchase_id:
+          type: integer
+        product_id:
+          type: integer
+        order_qnt:
+          type: integer
+
+    SalesOrder:
+      type: object
+      properties:
+        sales_id:
+          type: integer
+        status:
+          type: string
+
+    PickingTask:
+      type: object
+      properties:
+        picking_id:
+          type: integer
+        sales_id:
+          type: integer
+        status:
+          type: string
