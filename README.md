@@ -51,19 +51,15 @@ APIs follow REST architecture with standard HTTP methods:
    PATCH-
    DELETE – Remove records
 
-Swagger/OpenAPI is used for documentation.
-
-Reason:
-REST APIs are platform-independent, scalable, and easy to document and test.
+Swagger is used for documentation.
 
 Authentication & Authorization
 Role-based access control using a Role table instead of separate admin/user tables.
 Each user is mapped to a role.
 
-Reason:
-RBAC improves scalability and avoids schema changes when adding new roles.
 
-3.4 Inventory Management Strategy
+
+Inventory Management Strategy
 Inventory quantity is updated automatically during:
 
 Order creation
