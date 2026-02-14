@@ -1,219 +1,312 @@
-openapi: 3.0.0
+openapi: 3.0.3
 info:
-  title: Warehouse Management System API
-  description: REST API for managing warehouse operations such as inventory, orders, suppliers, and picking tasks.
+  title: Warehouse Management System
+  description: REST API for managing warehouses, inventory, products, picking, and orders
   version: 1.0.0
   contact:
+    name: Warehouse Management System
     email: spanitechrayslabs@gmail.com
-    name: warehouse management system
-  
+
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/techrayslabs-5b1/w.m.s/1.0.0
+  - url: http://localhost:8080/api
+
 paths:
+  
+  /warehouses/{warehouse_id}:
+    get:
+      tags: [Warehouse]
+      summary: Get warehouse by ID
+      parameters:
+        - name: warehouse_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Warehouse details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Warehouse"
+
+    put:
+      tags: [Warehouse]
+      summary: Update warehouse
+      parameters:
+        - name: warehouse_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Warehouse"
+      responses:
+        "200":
+          description: Warehouse updated
 
   /roles:
     get:
-      tags:
-        - roles
-      description: to fetch details of the warehouse
-      parameters:
-        - name: role
-          in: path
+      tags: [Role]
       summary: Get all roles
       responses:
-        '200':
-          description: List of roles
-          content: 
+        "200":
+          description: Roles list
+          content:
             application/json:
               schema:
-              $ref: '#/components/schemas/Role'
+                type: array
+                items:
+                  $ref: "#/components/schemas/Role"
 
     post:
-      summary: Create a new role
+      tags: [Role]
+      summary: Create role
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Role'
+              $ref: "#/components/schemas/Role"
       responses:
-        '201':
+        "201":
           description: Role created
 
-  /warehouses:
+  /purchase_order:
     get:
-      tags:
-        - warehouse
-      description: to fetch details of the warehouse
-      parameters:
-        - name: role
-          in: path
-      summary: Get all roles
+      tags: [purchase_order]
+      summary: Get all warehouses
       responses:
-        '200':
-          description: List of roles
-          content: 
+        "200":
+          description: List of warehouses
+          content:
             application/json:
               schema:
-              $ref: '#/components/schemas/Warehouse'
+                type: array
+                items:
+                  $ref: "#/components/schemas/purchase_order"
     post:
-      summary: Create a warehouse
+      tags: [purchase_order]
+      summary: Create role
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Warehouse'
+              $ref: '#/components/schemas/purchase_order'
       responses:
-        '201':
-          description: Warehouse created
+        "201":
+          description: order purchased     
+    patch:
+      tags: [purchase_order]
+      summary: Get all warehouses
+      responses:
+        "200":
+          description: List of warehouses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/purchase_order" 
+    delete:
+      tags: [purchase_order]
+      summary: Get all warehouses
+      responses:
+        "200":
+          description: List of warehouses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/purchase_order"                            
+            
 
   /zones:
     get:
-      summary: Get all zones
+      tags: [Zone]
+      summary: Get zones
       responses:
-        '200':
-          description: List of zones
-    post:
-      summary: Create a zone
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Zone'
-      responses:
-        '201':
-          description: Zone created
+        "200":
+          description: Zones list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Zone"
 
-  /products:
-    get:
-      summary: Get all products
-      responses:
-        '200':
-          description: List of products
     post:
-      summary: Create a product
+      tags: [Zone]
+      summary: Create zone
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Product'
+              $ref: "#/components/schemas/Zone"
       responses:
-        '201':
-          description: Product created
+        "201":
+          description: Zone created
 
   /inventory:
     get:
-      summary: Get inventory details
+      tags: [Inventory]
+      summary: Get inventory
       responses:
-        '200':
+        "200":
           description: Inventory list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Inventory"
+
     post:
+      tags: [Inventory]
       summary: Add inventory
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Inventory'
+              $ref: "#/components/schemas/Inventory"
       responses:
-        '201':
+        "201":
           description: Inventory added
 
-  /suppliers:
-    get:
-      summary: Get all suppliers
+    put:
+      tags: [Inventory]
+      summary: Get all warehouses
       responses:
-        '200':
-          description: List of suppliers
-    post:
-      summary: Create supplier
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Supplier'
+        "200":
+          description: List of warehouses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/purchase_order"  
+    delete:
+      tags: [Inventory]
+      summary: Get all warehouses
       responses:
-        '201':
-          description: Supplier created
+        "200":
+          description: List of warehouses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/purchase_order"                  
 
-  /purchase-orders:
-    get:
-      summary: Get purchase orders
-      responses:
-        '200':
-          description: List of purchase orders
-    post:
-      summary: Create purchase order
+  /inventory/{inventory_id}:
+    patch:
+      tags: [Inventory]
+      summary: Update inventory quantity
+      parameters:
+        - name: inventory_id
+          in: path
+          required: true
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PurchaseOrder'
+              $ref: "#/components/schemas/Inventory"
       responses:
-        '201':
-          description: Purchase order created
+        "200":
+          description: Inventory updated
 
-  /purchase-order-items:
-    post:
-      summary: Add item to purchase order
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PurchaseOrderItem'
+  /products:
+    get:
+      tags: [Product]
+      summary: Get products
       responses:
-        '201':
-          description: Item added
+        "200":
+          description: Product list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
 
-  /sales-orders:
-    get:
-      summary: Get sales orders
-      responses:
-        '200':
-          description: List of sales orders
     post:
-      summary: Create sales order
+      tags: [Product]
+      summary: Add product
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SalesOrder'
+              $ref: "#/components/schemas/Product"
       responses:
-        '201':
-          description: Sales order created
-  /picking-tasks:
+        "201":
+          description: Product created
+
+  /products/{product_id}:
+    patch:
+      tags: [Product]
+      summary: Update product
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+      responses:
+        "200":
+          description: Product updated
+
+  /picking:
     get:
-      summary: Get picking tasks
+      tags: [Picking]
+      summary: Get picking records
       responses:
-        '200':
-          description: List of picking tasks
+        "200":
+          description: Picking list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Picking"
+
     post:
+      tags: [Picking]
       summary: Create picking task
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PickingTask'
+              $ref: "#/components/schemas/Picking"
       responses:
-        '201':
-          description: Picking task created
+        "201":
+          description: Picking created
+
+  
 
 components:
   schemas:
-
-    Role:
-      type: object
-      properties:
-        role_id:
-          type: integer
-        role_name:
-          type: string
 
     Warehouse:
       type: object
@@ -227,6 +320,14 @@ components:
         role_id:
           type: integer
 
+    Role:
+      type: object
+      properties:
+        role_id:
+          type: integer
+        role_name:
+          type: string
+
     Zone:
       type: object
       properties:
@@ -236,18 +337,6 @@ components:
           type: integer
         zone_type:
           type: string
-
-    Product:
-      type: object
-      properties:
-        product_id:
-          type: integer
-        product_name:
-          type: string
-        category:
-          type: string
-        unit:
-          type: integer
 
     Inventory:
       type: object
@@ -261,53 +350,34 @@ components:
         quantity:
           type: integer
 
-    Supplier:
+    Product:
       type: object
       properties:
-        supplier_id:
-          type: integer
-        supplier_name:
-          type: string
-        phone_no:
-          type: integer
-          format: int64
-
-    PurchaseOrder:
-      type: object
-      properties:
-        purchase_id:
-          type: integer
-        supplier_id:
-          type: integer
-        status:
-          type: string
-
-    PurchaseOrderItem:
-      type: object
-      properties:
-        order_id:
-          type: integer
-        purchase_id:
-          type: integer
         product_id:
           type: integer
-        order_qnt:
-          type: integer
-
-    SalesOrder:
-      type: object
-      properties:
-        sales_id:
-          type: integer
-        status:
+        product_name:
+          type: string
+        category:
+          type: string
+        unit:
           type: string
 
-    PickingTask:
+    Picking:
       type: object
       properties:
         picking_id:
           type: integer
-        sales_id:
-          type: integer
         status:
+          type: string
+        sales_id:
+          type: string
+
+    purchase_order:
+      type: object
+      properties:
+        purchase_order_id:
+          type: integer
+        supplier_id: 
+          type: integer
+        status: 
           type: string
